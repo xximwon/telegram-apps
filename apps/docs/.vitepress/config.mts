@@ -44,7 +44,7 @@ export default defineConfig({
 
   // https://vitepress.dev/reference/default-theme-config
   themeConfig: {
-    logo: '/logo.png',
+    logo: '/logo.51ca4711470adeabdefae22e7a0a1560.png',
 
     // https://vitepress.dev/reference/default-theme-footer#footer
     footer: {
