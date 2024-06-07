@@ -1,29 +1,129 @@
 # Creating New App
 
-In this article, we will delve into the process of developing a new application on the Telegram Mini
-Apps platform, we will find out exactly what actions need to be performed to create it, as well as
-give advice on improving the process of creating an application.
+Developing a new web application is a rather complex process. Most of the time, it involves creating
+both front-end and back-end parts of the project, each consisting of its own small components. It is
+common knowledge that web applications are developed with usual browsers in mind, such as Google
+Chrome, Safari, Firefox, etc. We can't really say that these browsers differ a lot from each other,
+so when developing web applications, we expect to work in almost the same environment.
 
-The process of creating an application usually consists of the following basic steps:
+Nevertheless, when we talk about Telegram Mini Apps, it provides its own web-based environment
+with specific traits and mechanisms. So, in this article, we will look at how developers can start
+developing their applications on this platform and demonstrate that it is not really difficult.
 
-1. Creating Telegram bot and registering Mini App.
-2. Creating web application.
-3. Getting web application URL and setting it via BotFather.
+In this guide, we will do the following:
 
-## Before Starting
+- Use a special tool for scaffolding the application.
+- Run the application and obtain a development link, so we can develop comfortably.
+- Run the application both inside and outside Telegram.
+- Create a new application in [@BotFather](https://t.me/botfather).
+- Create a GitHub repository, configure it, and deploy the application.
+- See the application working in production, become happy because we have found out that it was
+  easy ❤️
 
-Before creating a new Mini App, you need to remember an important rule: _do not create
-entities related to development in the production environment_. Development within the production
-environment is a sign of bad taste, so use it strictly if you can't avoid it.
+## Scaffold Application
 
-To create an application we should use test environment. You can learn more about switching to it
-in [this](test-environment.md) article.
+To scaffold an application, we should use a CLI tool
+named [@telegram-apps/create-mini-app](https://docs.telegram-mini-apps.com/packages/telegram-apps-create-mini-app).
+It prompts the developer with some questions, after which a new application will be initialized in
+the specified folder.
 
-Speaking of advantages a developer gets from the test environment, it is important to mention an
-opportunity of usage of HTTP links instead of HTTPS, as well as IPs directly. Production
-environment allows usage only valid HTTPS links.
+To run it, use one of the following commands and complete the initialization process. For
+educational purposes, use the technologies combination of `tma.js`, `React.js`, and `TypeScript`.
 
-## Creating Application in BotFather
+::: code-group
+
+```bash [pnpm]
+pnpm dlx @telegram-apps/create-mini-app@latest
+```
+
+```bash [npm]
+npx @telegram-apps/create-mini-app@latest
+```
+
+```bash [yarn]
+yarn create @telegram-apps/mini-app
+```
+
+:::
+
+Here is the output example, you will see in your console:
+
+![img_2.png](img_2.png)
+
+From now on, we have a **mini-app** folder containing our mini application. Let's navigate to this
+folder and install the dependencies:
+
+```Bash
+# Go to directory.
+cd mini-apps
+
+# Install dependencies.
+npm i
+```
+
+You are probably curious about what technologies exactly are being used by this application. So,
+here is the list of the most important ones:
+
+- [React](https://react.dev/): A library for building web interfaces.
+- [TypeScript](https://www.typescriptlang.org/): A typed alternative to JavaScript.
+- [TON Connect](https://docs.ton.org/develop/dapps/ton-connect/overview): A library for connecting
+  your mini app with the user's wallet.
+- [@tma.js SDK](https://docs.telegram-mini-apps.com/packages/tma-js-sdk): Telegram Mini Apps Source
+  Development Kit built from scratch.
+- [Telegram UI](https://github.com/Telegram-Mini-Apps/TelegramUI): A library for constructing
+  interfaces that look native to the Telegram interface.
+- [Vite](https://vitejs.dev/): A powerful bundler that helps you build your application.
+
+::: tip
+
+Initialized project root directory contains the **README.md** file answering a lot of questions.
+In case you have some, refer to this file.
+
+:::
+
+## Run Application
+
+To run the development server, use the `dev` script:
+
+```Bash
+npm run dev
+```
+
+You will see a similar output:
+
+![img_1.png](img_1.png)
+
+Let's clarify, what these links are.
+
+Our application uses such Vite plugin
+as [@vitejs/plugin-basic-ssl](https://www.npmjs.com/package/@vitejs/plugin-basic-ssl). Its main
+purpose is to provide an ability to get a link with the HTTPS protocol. You can disable it, but
+in this case, you will only be allowed to view the application outside Telegram. This way of
+developing application is considered worse, as long as you will not be able to use all Telegram
+Mini Apps features and check, how they work in real world. Nevertheless, disabling the plugin
+is not prohibited.
+
+It is worth mentioning,
+that you are not able to use non-HTTPS links inside Telegram. So, you must have one.
+
+Nevertheless,
+
+is to allow us to use SSL and retrieve a link with the HTTPS protocol.
+
+## GitHub Repository
+
+Each project starts with a storage we use to keep our codebase in. It can be any known project -
+BitBucket, GitLab, GitHub, etc. Such projects help us to configure CI/CD, track code changes
+and many more.
+
+In this guide, we will use GitHub as our codebase storage.
+
+In case, you still don't have an account, follow the
+GitHub's [Sign Up page](https://github.com/signup) and create a new one.
+
+When account is created, let's create a new repository.
+
+## Create Application in BotFather
 
 As long as technically, Mini Apps are connected with Telegram bots, we should firstly create
 a Telegram bot. To do this, you need to find the father of all bots, the
@@ -32,14 +132,18 @@ process, specifying all the necessary data.
 
 When the bot is created, it is required then to use the command `/newapp` and again go through the
 procedure of creating another entity - the Telegram Mini Apps application, linking it to the
-Telegram bot. From now on, the created application will be available via a direct link of the
+Telegram bot. When BotFather will request the application link, just specify some temporary link.
+For example - `https://example.com`.
+
+From now on, the created application will be available via a direct link of the
 form `https://t.me/{mybot}/{myapp}`.
 
 ::: info
 
 Telegram Mini Apps technology can also be utilized without creating a new application but rather as
 a web interface for a bot. To use it as an extension of the bot, use the
-BotFather's `/setmenubutton` command.
+BotFather's `/setmenubutton` command. In this case we will be able to open the application
+just clicking the Menu Button.
 
 :::
 
@@ -92,9 +196,11 @@ to [this](debugging.md) article.
 [//]: # (## Additional)
 
 [//]: # ()
+
 [//]: # (### Hot Module Replacement)
 
 [//]: # ()
+
 [//]: # (The application development process is a fairly complex and lengthy process. You always want to see)
 
 [//]: # (the changes you make in the code right away on the screen. In order to see the changes in real time,)
@@ -106,6 +212,7 @@ to [this](debugging.md) article.
 [//]: # (include this functionality by default.)
 
 [//]: # ()
+
 [//]: # (How to configure HMR can be found)
 
 [//]: # (in [this Webpack article]&#40;https://webpack.js.org/guides/hot-module-replacement/&#41;.)
